@@ -6,10 +6,13 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.microusuario.microserviceusuario.models.Estudiante;
 import com.microusuario.microserviceusuario.models.Instructor;
-
+import com.microusuario.microserviceusuario.models.entity.EstudianteEntity;
 import com.microusuario.microserviceusuario.models.entity.InstructorEntity;
 import com.microusuario.microserviceusuario.repository.InstructorRepository;
+
+import jakarta.persistence.criteria.CriteriaBuilder.In;
 
 @Service
 public class InstructorService {
@@ -50,7 +53,32 @@ public class InstructorService {
         }
     }
 
+ public Instructor traerInstructor(String correo){
+        try{
+            InstructorEntity inst = instructorRepository.findBycorreo(correo);
+            if (inst!=null){
+                Instructor instructorNuevo = new Instructor(
+                    inst.getId(),
+                    inst.getRun(),
+                    inst.getNombre(),
+                    inst.getApellido(),
+                    inst.getCorreo(),
+                    inst.getContraseña(),
+                    inst.getCursoAsingnado()
+                );
+                return instructorNuevo;
 
+            }
+            return null;
+
+
+        }
+        catch (Exception e){
+            return null;
+        }
+        
+
+    }
 
     public String borrarInstructor (int id ){
         for (Instructor tor : instructores){

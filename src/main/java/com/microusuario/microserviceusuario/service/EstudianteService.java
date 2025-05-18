@@ -104,11 +104,11 @@ public class EstudianteService{
     }
      
 
-      public String borrarInstructor (int id ){
+      public String borrarEstudiante(int id ){
         for (Estudiante est : estudiantes){
             if(est.getId()== id ){
                 estudiantes.remove(est);
-                return "usuario borrado correctamente ";
+                return "estudiante borrado correctamente ";
             }
         }
         return null;

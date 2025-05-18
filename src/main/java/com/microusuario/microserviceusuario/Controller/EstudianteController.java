@@ -3,6 +3,7 @@ package com.microusuario.microserviceusuario.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,7 +30,7 @@ public class EstudianteController{
         this.estudianteRepository = estudianteRepository;
     }
 
-
+    @Operation(summary = "traer estudiantes")
     @GetMapping("/estudiantes/{correo}")
     public ResponseEntity<Estudiante>traerEstudiante(@PathVariable String correo){
         return ResponseEntity.ok(estudianteService.traerEstudiante(correo));
@@ -40,8 +41,14 @@ public class EstudianteController{
     public ResponseEntity<String> agregarEstudiante(@RequestBody Estudiante estudiante) {
         return ResponseEntity.ok(estudianteService.agregarEstudiante(estudiante));
     }
-
     
+    @Operation(summary = "borrar estudiante")
+    @DeleteMapping("/estudiantes/{id}")
+    public String borrarEstudiante(@PathVariable int id ){
+        return accionesEstudiante.borrarEstudiante(id);
+    }
+
+    @Operation(summary = "inscribir curso")
     @GetMapping("/inscribir/{correo}/{nuevoCurso}")
     public String inscribirCurso(@PathVariable String correo,@PathVariable String neuvoCurso){
         return estudianteService.inscribirCurso(correo, neuvoCurso);
