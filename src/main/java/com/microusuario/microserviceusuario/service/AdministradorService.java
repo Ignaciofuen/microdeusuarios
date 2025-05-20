@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.microusuario.microserviceusuario.models.Administrador;
 import com.microusuario.microserviceusuario.models.Estudiante;
 import com.microusuario.microserviceusuario.models.Instructor;
+import com.microusuario.microserviceusuario.models.entity.AdministradorEntity;
 import com.microusuario.microserviceusuario.repository.AdministradorRepository;
 
 
@@ -28,20 +29,25 @@ public class AdministradorService {
 
      private final List<Administrador> administradores = new ArrayList<>();
 
-     public AdministradorService(){
+    public AdministradorService(){
         administradores.add(new Administrador(343, "20998123-k", "jorge", "fuenzalida", "fuen@gmail.com", "hola454", "adm123"));
 
-     }
+    }
 
-     public List<Estudiante>obtenerEstudiantesAdm(){
+     
+    public List<Administrador>obtenerAdministrador(){
+        return administradores;
+    }
+
+    public List<Estudiante>obtenerEstudiantesAdm(){
       return estudianteService.obtenerEstudiantes();
-     }
+    }
 
-     public List<Instructor>obInstructoresAdm(){
+    public List<Instructor>obInstructoresAdm(){
       return instructorService.obtenerInstructores();
-     }
+    }
 
-     public List<String>obtenerInstructoresConCurso(){
+    public List<String>obtenerInstructoresConCurso(){
          List<String> instructoresConCurso = new ArrayList<>();
          for(Instructor ins: instructorService.obtenerInstructores()){
             String nombreCompleto = ins.getNombre() + " " + ins.getApellido();
@@ -50,11 +56,45 @@ public class AdministradorService {
 
          }
          return instructoresConCurso;
-      }
+    }
+
+    public String agregarAdministrador(Administrador adm) {
+        try {
+            boolean estado = administradorRepository.existsByCorreo(adm.getCorreo());
+            if(!estado){
+                AdministradorEntity nuevoAdministrador = new AdministradorEntity();
+                nuevoAdministrador.setRun(adm.getRun());
+                nuevoAdministrador.setNombre(adm.getNombre()); 
+                nuevoAdministrador.setApellido(adm.getApellido());
+                nuevoAdministrador.setCorreo(adm.getCorreo());
+                nuevoAdministrador.setContrasena(adm.getContrasena());
+                nuevoAdministrador.setAdminCode(adm.getAdminCode());
+                administradorRepository.save(nuevoAdministrador);
+                return "Administrador agregado correctamente";
+            }
+            return "El usuario ya existe";           
+
+        }
+        catch(Exception e){
+            return "Ha ocurrido un error";
+        }
+    }
+
+    public String borrarAdministrador(int id) {
+        try {
+            if(administradorRepository.existsById(id)){
+                administradorRepository.deleteById(id);
+                return "Administrador eliminado correctamente";
+            }
+            return "El administrador no existe";
+        } catch (Exception e) {
+            return "Ha ocurrido un error: " + e.getMessage();
+        }
 
 
-   }
 
+    }
+}
 
 
 

@@ -5,9 +5,14 @@ package com.microusuario.microserviceusuario.models;
 public class Estudiante extends Usuario {
     private String cursoInscrito;
 
-    public Estudiante(int id, String run, String nombre, String apellido, String correo, String contraseña,
+
+    public Estudiante() {
+        super(); 
+    }
+
+    public Estudiante(int id, String run, String nombre, String apellido, String correo, String contrasena,
             String cursoInscrito) {
-        super(id, run, nombre, apellido, correo, contraseña);
+        super(id, run, nombre, apellido, correo, contrasena);
         this.cursoInscrito = cursoInscrito;
     }
 
@@ -22,6 +27,8 @@ public class Estudiante extends Usuario {
     public void setCursoInscrito(String cursoInscrito) {
         this.cursoInscrito = cursoInscrito;
     }
+
+    
     
 
     

@@ -5,9 +5,14 @@ public class Instructor extends Usuario {
 
     private String cursoAsignado;
 
-    public Instructor(int id, String run, String nombre, String apellido, String correo, String contraseña,
+
+    public Instructor() {
+        super(); 
+    }
+
+    public Instructor(int id, String run, String nombre, String apellido, String correo, String contrasena,
             String cursoAsignado) {
-        super(id, run, nombre, apellido, correo, contraseña);
+        super(id, run, nombre, apellido, correo, contrasena);
         this.cursoAsignado = cursoAsignado;
     }
 
@@ -22,6 +27,7 @@ public class Instructor extends Usuario {
     public void setCursoAsignado(String cursoAsignado) {
         this.cursoAsignado = cursoAsignado;
     }
+
     
 
 

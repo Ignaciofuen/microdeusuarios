@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 
 import com.microusuario.microserviceusuario.models.Estudiante;
@@ -29,10 +31,24 @@ public class EstudianteService{
         
     }
 
-    public List<Estudiante>obtenerEstudiantes(){
-        return estudiantes;
-    }
 
+    public List<Estudiante> obtenerEstudiantes(){
+        List<EstudianteEntity> entities = (List<EstudianteEntity>) estudianteRepository.findAll();
+
+        List<Estudiante> dtos = new ArrayList<>();
+        for (EstudianteEntity entity : entities) {
+            dtos.add(new Estudiante(
+                entity.getId(), 
+                entity.getRun(),
+                entity.getNombre(),
+                entity.getApellido(),
+                entity.getCorreo(),
+                entity.getContrasena(),
+                entity.getCursoInscrito()
+            ));
+        }
+        return dtos;
+    }
     
 
 
@@ -41,25 +57,24 @@ public class EstudianteService{
             Boolean estado = estudianteRepository.existsByCorreo(est.getCorreo());
             if (!estado){
                 EstudianteEntity nuevoEstudiante = new EstudianteEntity();
-                nuevoEstudiante.setId(est.getId());
                 nuevoEstudiante.setRun(est.getRun());
                 nuevoEstudiante.setNombre(est.getNombre());
                 nuevoEstudiante.setApellido(est.getApellido());
                 nuevoEstudiante.setCorreo(est.getCorreo());
-                nuevoEstudiante.setContraseña(est.getContraseña());
+                nuevoEstudiante.setContrasena(est.getContrasena());
                 nuevoEstudiante.setCursoInscrito(est.getCursoInscrito());
                 estudianteRepository.save(nuevoEstudiante);
                 return "Estudiante Agregado correctamente ";
             }
             return "El usuario ya existe ";
+        } catch (ObjectOptimisticLockingFailureException e) {
+            return "Error de concurrencia: " + e.getMessage();
+        } catch (Exception e) {
+            return "Ha ocurrido un error: " + e.getMessage();
         }
-        catch(Exception e){
-            return " ha ocurrido un error ";
-        }
-
     }
 
-     public Estudiante traerEstudiante(String correo){
+    public Estudiante traerEstudiante(String correo){
         try{
             EstudianteEntity est = estudianteRepository.findByCorreo(correo);
             if (est!=null){
@@ -69,7 +84,7 @@ public class EstudianteService{
                     est.getNombre(),
                     est.getApellido(),
                     est.getCorreo(),
-                    est.getContraseña(),
+                    est.getContrasena(),
                     est.getCursoInscrito()
                 );
                 return estudianteNuevo;
@@ -104,14 +119,29 @@ public class EstudianteService{
     }
      
 
-      public String borrarEstudiante(int id ){
-        for (Estudiante est : estudiantes){
-            if(est.getId()== id ){
-                estudiantes.remove(est);
-                return "estudiante borrado correctamente ";
-            }
+    
+
+    public String borrarEstudiante(int id) {    
+        if (estudianteRepository.existsById(id)) {
+            estudianteRepository.deleteById(id);
+        return "estudiante borrado correctamente ";
         }
-        return null;
+        return "estudiante no encontrado";
+    }
+
+    public ResponseEntity<String> ActualizarNombre( String correo, String nuevoNombre) {
+        Boolean estado = estudianteRepository.existsByCorreo(correo);
+        if (estado){
+            EstudianteEntity nuevoEstudiante = estudianteRepository.findByCorreo(correo);
+            nuevoEstudiante.setNombre(nuevoNombre);
+            
+            estudianteRepository.save(nuevoEstudiante);
+            return ResponseEntity.ok("Nombre actualizado correctamente");
+
+
+        }
+        return ResponseEntity.notFound().build();
+
     }
 
 }

@@ -6,41 +6,63 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.microusuario.microserviceusuario.models.Estudiante;
 import com.microusuario.microserviceusuario.models.Instructor;
-import com.microusuario.microserviceusuario.models.entity.EstudianteEntity;
+
 import com.microusuario.microserviceusuario.models.entity.InstructorEntity;
 import com.microusuario.microserviceusuario.repository.InstructorRepository;
 
-import jakarta.persistence.criteria.CriteriaBuilder.In;
+
 
 @Service
 public class InstructorService {
 
     @Autowired
     private InstructorRepository instructorRepository;
+    
 
     private final List<Instructor>instructores = new ArrayList<>();
 
-    public InstructorService(){
-        instructores.add(new Instructor(232, "198837764", "carlos", "ramirez", "ca.ramirez@gamil.com", "carl123", "ingles"));
+    
+
+
+     public List<Instructor> obtenerInstructores(){
+        List<InstructorEntity> entities = (List<InstructorEntity>) instructorRepository.findAll();
+
+
+        List<Instructor> dtos = new ArrayList<>();
+        for (InstructorEntity entity : entities) {
+             dtos.add(new Instructor(
+                 entity.getId(), 
+                 entity.getRun(),
+                 entity.getNombre(),
+                 entity.getApellido(),
+                 entity.getCorreo(),
+                 entity.getContrasena(),
+                 entity.getCursoAsingnado()
+             ));
+        }
+        return dtos;
+
+
     }
 
-    public List<Instructor>obtenerInstructores(){
-        return instructores;
-    }
+
+
+
+
+
+
 
     public String agregarInstructor(Instructor ins) {
         try {
             boolean estado = instructorRepository.existsByCorreo(ins.getCorreo());
             if(!estado){
                 InstructorEntity nuevoInstructor = new InstructorEntity();
-                nuevoInstructor.setId(ins.getId());
                 nuevoInstructor.setRun(ins.getRun());   
                 nuevoInstructor.setNombre(ins.getNombre());
                 nuevoInstructor.setApellido(ins.getApellido());
                 nuevoInstructor.setCorreo(ins.getCorreo());
-                nuevoInstructor.setContraseña(ins.getContraseña());
+                nuevoInstructor.setContrasena(ins.getContrasena());
                 nuevoInstructor.setCursoAsingnado(ins.getCursoAsignado());
                 instructorRepository.save(nuevoInstructor);
                 return "Instructor agregado correctamente";
@@ -63,7 +85,7 @@ public class InstructorService {
                     inst.getNombre(),
                     inst.getApellido(),
                     inst.getCorreo(),
-                    inst.getContraseña(),
+                    inst.getContrasena(),
                     inst.getCursoAsingnado()
                 );
                 return instructorNuevo;
@@ -80,16 +102,13 @@ public class InstructorService {
 
     }
 
-    public String borrarInstructor (int id ){
-        for (Instructor tor : instructores){
-            if(tor.getId()== id ){
-                instructores.remove(tor);
-                return "usuario borrado correctamente ";
-            }
+   public String borrarInstructor(int id) {    
+        if (instructorRepository.existsById(id)) {
+            instructorRepository.deleteById(id);
+        return "instructor borrado correctamente ";
         }
-        return null;
+        return "instructor no encontrado";
     }
-
 
 
     
