@@ -105,7 +105,7 @@ public class InstructorService {
    public String borrarInstructor(int id) {    
         if (instructorRepository.existsById(id)) {
             instructorRepository.deleteById(id);
-        return "instructor borrado correctamente ";
+        return "instructor borrado correctamente";
         }
         return "instructor no encontrado";
     }

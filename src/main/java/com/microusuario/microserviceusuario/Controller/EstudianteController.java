@@ -2,6 +2,8 @@ package com.microusuario.microserviceusuario.Controller;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,13 +39,17 @@ public class EstudianteController{
     public ResponseEntity<Estudiante>traerEstudiante(@PathVariable String correo){
         return ResponseEntity.ok(estudianteService.traerEstudiante(correo));
     }
+
     
     @Operation(summary = "agregar_estudiante")
     @PostMapping("/agregar")
     public ResponseEntity<String> agregarEstudiante(@RequestBody Estudiante estudiante) {
-        return ResponseEntity.ok(estudianteService.agregarEstudiante(estudiante));
+        String nuevoEstudiante = estudianteService.agregarEstudiante(estudiante);
+        return ResponseEntity.status(HttpStatus.CREATED).body(nuevoEstudiante);
+        
     }
-    
+
+
     @Operation(summary = "borrar_estudiante")
     @DeleteMapping("/borrar/{id}")
     public String borrarEstudiante(@PathVariable int id ){
