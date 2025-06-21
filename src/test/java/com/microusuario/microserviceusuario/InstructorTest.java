@@ -64,6 +64,16 @@ public class InstructorTest {
     String result = instructorService.borrarInstructor(2); 
     assertEquals("instructor borrado correctamente", result.trim());
    }
+
+    @Test
+    public void traerInstructorPorCorreo(){
+        when(instructorRepository.findBycorreo("mar@gmai.com")).thenReturn(instructorEntity);
+        Instructor result = instructorService.traerInstructor("mar@gmai.com");
+        assertEquals("pablo", result.getNombre());
+   }
+
+
+
 }
 
 

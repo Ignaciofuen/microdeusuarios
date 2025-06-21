@@ -1,6 +1,7 @@
 package com.microusuario.microserviceusuario.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,8 +38,23 @@ public class InstructorController {
     @Operation(summary = "agregar_instructor")
     @PostMapping("/agregar")
     public ResponseEntity<String> agregarInstructor(@RequestBody Instructor instructor) {
-        return ResponseEntity.ok(instructorService.agregarInstructor(instructor));
+        String nuevoInstructor = instructorService.agregarInstructor(instructor);
+
+        if (nuevoInstructor.equals("El usuario ya existe")){
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(nuevoInstructor);
+        }else if (nuevoInstructor.equals("Instructor agregado correctamente")){
+            return ResponseEntity.status(HttpStatus.CREATED).body(nuevoInstructor);
+
+        }else{
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(nuevoInstructor);
+        }
+        
+
+       
     }
+
+
+        
 
     @Operation(summary = "traer_instructor")
     @GetMapping("/traer/{correo}")
@@ -46,11 +62,19 @@ public class InstructorController {
         return ResponseEntity.ok(instructorService.traerInstructor(correo));
     }
 
+
     @Operation(summary = "borrar_instructor")
     @DeleteMapping("/borrar/{id}")
-    public String borrarInstructor(@PathVariable int id ){
-        return instructorService.borrarInstructor(id);
+    public ResponseEntity<Void> borrarInstructor(@PathVariable int id) {
+        String resultado = instructorService.borrarInstructor(id);
+        if (resultado.equals("instructor borrado correctamente")) {
+            return ResponseEntity.noContent().build();
+        }else {
+            return ResponseEntity.notFound().build();
+        }
     }
+
+
   
 
 }    

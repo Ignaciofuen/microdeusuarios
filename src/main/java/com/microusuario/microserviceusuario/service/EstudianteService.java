@@ -66,7 +66,7 @@ public class EstudianteService{
                 estudianteRepository.save(nuevoEstudiante);
                 return "Estudiante Agregado correctamente ";
             }
-            return "El usuario ya existe ";
+            return "El usuario ya existe";
         } catch (ObjectOptimisticLockingFailureException e) {
             return "Error de concurrencia: " + e.getMessage();
         } catch (Exception e) {
@@ -124,25 +124,22 @@ public class EstudianteService{
     public String borrarEstudiante(int id) {    
         if (estudianteRepository.existsById(id)) {
             estudianteRepository.deleteById(id);
-        return "estudiante borrado correctamente ";
+        return "estudiante borrado correctamente";
         }
         return "estudiante no encontrado";
     }
 
-    public ResponseEntity<String> ActualizarNombre( String correo, String nuevoNombre) {
-        Boolean estado = estudianteRepository.existsByCorreo(correo);
-        if (estado){
-            EstudianteEntity nuevoEstudiante = estudianteRepository.findByCorreo(correo);
-            nuevoEstudiante.setNombre(nuevoNombre);
-            
-            estudianteRepository.save(nuevoEstudiante);
-            return ResponseEntity.ok("Nombre actualizado correctamente");
-
-
+    public boolean actualizarContraseña(String correo, String nuevaContraseña) {
+        EstudianteEntity estudiante = estudianteRepository.findByCorreo(correo);
+        if (estudiante == null) {
+            return false;
         }
-        return ResponseEntity.notFound().build();
-
+        estudiante.setContrasena(nuevaContraseña);;
+            estudianteRepository.save(estudiante);
+        return true;
     }
 
-}
+    
 
+
+}

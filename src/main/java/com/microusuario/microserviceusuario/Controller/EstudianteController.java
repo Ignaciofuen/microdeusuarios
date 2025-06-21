@@ -34,10 +34,17 @@ public class EstudianteController{
         this.estudianteRepository = estudianteRepository;
     }
 
+
+
     @Operation(summary = "traer_estudiantes")
     @GetMapping("/traer/{correo}")
     public ResponseEntity<Estudiante>traerEstudiante(@PathVariable String correo){
-        return ResponseEntity.ok(estudianteService.traerEstudiante(correo));
+        Estudiante estudiante = estudianteService.traerEstudiante(correo);
+        if(estudiante == null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        return ResponseEntity.ok(estudiante);
+       
     }
 
     
@@ -45,29 +52,62 @@ public class EstudianteController{
     @PostMapping("/agregar")
     public ResponseEntity<String> agregarEstudiante(@RequestBody Estudiante estudiante) {
         String nuevoEstudiante = estudianteService.agregarEstudiante(estudiante);
-        return ResponseEntity.status(HttpStatus.CREATED).body(nuevoEstudiante);
+        
+        if (nuevoEstudiante.equals("El usuario ya existe")){
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(nuevoEstudiante);
+        }else if (nuevoEstudiante.equals("Estudiante Agregado correctamente ")){
+            return ResponseEntity.status(HttpStatus.CREATED).body(nuevoEstudiante);
+
+        }else{
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(nuevoEstudiante);
+        }
         
     }
 
 
     @Operation(summary = "borrar_estudiante")
     @DeleteMapping("/borrar/{id}")
-    public String borrarEstudiante(@PathVariable int id ){
-        return estudianteService.borrarEstudiante(id);
+    public ResponseEntity<Void> borrarEstudiante(@PathVariable int id) {
+        String resultado = estudianteService.borrarEstudiante(id);
+        if (resultado.equals("estudiante borrado correctamente")) {
+            return ResponseEntity.noContent().build();
+        }else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
+   
+
+    
     @Operation(summary = "inscribir_curso")
-    @GetMapping("/inscribir/{correo}/{nuevoCurso}")
-    public String inscribirCurso(@PathVariable String correo, @PathVariable("nuevoCurso") String nuevoCurso) {
-    return estudianteService.inscribirCurso(correo, nuevoCurso);
-    }
+    @PutMapping("/inscribir/{correo}/{nuevoCurso}")
+    public ResponseEntity<String> inscribirCurso(@PathVariable String correo, @PathVariable("nuevoCurso") String nuevoCurso) {
+        String nuevo = estudianteService.inscribirCurso(correo, nuevoCurso);
+        
+        if (nuevo.equals("Estudiante no encontrado")) {
+            return ResponseEntity.status(404).body(nuevo);
+        }
+        if (nuevo.equals("Ocurrió un error al inscribir el curso")) {
+                return ResponseEntity.status(500).body(nuevo); 
+        }else{
+            return ResponseEntity.status(201).body(nuevo); 
+        }
   
-
-    @Operation(summary = "actualizar_nombre")
-    @PutMapping("/actualizarNombre/{correo}")
-    public ResponseEntity<String> actualizarEstudiante(@PathVariable String correo, @RequestBody String nuevoNombre) {
-    return estudianteService.ActualizarNombre(correo, nuevoNombre);
     }
+    
+    
+    @Operation(summary = "actualizar_contraseña")
+    @PutMapping("/actualizarContraseña/{correo}")
+    public ResponseEntity<String> actualizarEstudiante(@PathVariable String correo, @RequestBody String nuevaContraseña) {
+    boolean actualizado = estudianteService.actualizarContraseña(correo, nuevaContraseña);
+        if (actualizado) {
+            return ResponseEntity.status(201).body("Contraseña actualizada correctamente");
+        } else {
+            return ResponseEntity.status(404).body("Estudiante no encontrado");
+        }
+
+    }   
+
 
 
 }

@@ -3,6 +3,7 @@ package com.microusuario.microserviceusuario.Controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -56,18 +57,37 @@ public class AdministradorController {
         return administradorService.obtenerInstructoresConCurso();
     }
 
+    
+    @Operation(summary = "borrar_administrador")
+    @DeleteMapping("/borrar/{id}")
+    public ResponseEntity<Void> borrarAdministrador(@PathVariable int id) {
+        String resultado = administradorService.borrarAdministrador(id);
+        if (resultado.equals("Administrador eliminado correctamente")) {
+            return ResponseEntity.noContent().build();
+        }else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+  
+
+    
     @Operation(summary = "agregar_administrador")
     @PostMapping("/agregar")
     public ResponseEntity<String> agregarAdministrador(@RequestBody Administrador administrador) {
-        return ResponseEntity.ok(administradorService.agregarAdministrador(administrador));
-    }
+        String nuevoAdministrador = administradorService.agregarAdministrador(administrador);
 
-    @Operation(summary = "borrar")
-    @DeleteMapping("/borrar/{id}")
-    public String borrarAdministrador(@PathVariable int id ){
-        return administradorService.borrarAdministrador(id);
-    }
+        if (nuevoAdministrador.equals("El usuario ya existe")){
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(nuevoAdministrador);
+        }else if (nuevoAdministrador.equals("Administrador agregado correctamente")){
+            return ResponseEntity.status(HttpStatus.CREATED).body(nuevoAdministrador);
 
+        }else{
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(nuevoAdministrador);
+        }
+        
+
+       
+    }
 
     
 

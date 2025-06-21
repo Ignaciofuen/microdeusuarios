@@ -1,9 +1,12 @@
 package com.microusuario.microserviceusuario;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import org.h2.command.dml.MergeUsing.When;
@@ -53,7 +56,7 @@ public class EstudianteTest {
         String result = estudianteService.agregarEstudiante(estudiante);
         assertEquals("El usuario ya existe", result.trim());
 
-}
+    }
 
     
     @Test
@@ -83,4 +86,67 @@ public class EstudianteTest {
     String result = estudianteService.borrarEstudiante(1); 
     assertEquals("estudiante borrado correctamente", result.trim());
    }
+
+
+    @Test
+    public void tesTraerEstuduanteporCorreo(){
+        when(estudianteRepository.findByCorreo("fu@gmailcom")).thenReturn(estudianteEntity);
+        Estudiante result = estudianteService.traerEstudiante("fu@gmailcom");
+        assertNotNull(result);
+        assertEquals("juan", result.getNombre());
+
+
+    }
+
+    @Test
+    public void testActualizarContraseña() {
+    
+        String correo = "fu@gmail.com";
+        String nuevaContraseña = "nuevaPass456";
+
+        EstudianteEntity estudianteEntity = new EstudianteEntity();
+        estudianteEntity.setCorreo(correo);
+        estudianteEntity.setContrasena("antigua123");
+
+        
+        when(estudianteRepository.findByCorreo(correo)).thenReturn(estudianteEntity);
+
+    
+        boolean resultado = estudianteService.actualizarContraseña(correo, nuevaContraseña);
+
+    
+        assertTrue(resultado);  
+        assertEquals(nuevaContraseña, estudianteEntity.getContrasena()); 
+        verify(estudianteRepository).save(estudianteEntity);  
+    }
+
+    @Test
+    public void testAgregarCurso(){
+        String correo = "fu@gmail.com";
+        String nuevoCurso = "java";
+
+        EstudianteEntity estudianteEntity = new EstudianteEntity();
+        estudianteEntity.setCorreo(correo);
+        estudianteEntity.setCursoInscrito("python");
+
+        when(estudianteRepository.findByCorreo(correo)).thenReturn(estudianteEntity);
+
+        boolean resultado = estudianteService.actualizarContraseña(correo, nuevoCurso);
+
+        assertTrue(resultado); 
+        assertEquals(nuevoCurso, estudianteEntity.getContrasena()); 
+        verify(estudianteRepository).save(estudianteEntity); 
+
+    }
+
+
+    
+
+
+
+
+
+
+
+
 }
