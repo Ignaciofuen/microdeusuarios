@@ -17,18 +17,26 @@ import com.microusuario.microserviceusuario.repository.AdministradorRepository;
 @Service
 public class AdministradorService {
 
-    private InstructorRepository instructorRepository;
-
-    private EstudianteRepository estudianteRepository;
-
-    @Autowired 
-    private AdministradorRepository administradorRepository;
-
-    @Autowired
-    private EstudianteService estudianteService;
+    private final InstructorRepository instructorRepository;
+    private final EstudianteRepository estudianteRepository;
+    private final AdministradorRepository administradorRepository;
+    private final EstudianteService estudianteService;
+    private final InstructorService instructorService;
 
     @Autowired
-    private InstructorService instructorService;
+    public AdministradorService(
+        InstructorRepository instructorRepository,
+        EstudianteRepository estudianteRepository,
+        AdministradorRepository administradorRepository,
+        EstudianteService estudianteService,
+        InstructorService instructorService
+    ) {
+        this.instructorRepository = instructorRepository;
+        this.estudianteRepository = estudianteRepository;
+        this.administradorRepository = administradorRepository;
+        this.estudianteService = estudianteService;
+        this.instructorService = instructorService;
+    }
 
      private final List<Administrador> administradores = new ArrayList<>();
 
