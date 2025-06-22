@@ -9,7 +9,7 @@ import com.microusuario.microserviceusuario.models.entity.EstudianteEntity;
 
 @Repository
 public interface EstudianteRepository extends JpaRepository<EstudianteEntity, Integer> {
-
+    long count();
     EstudianteEntity findByCorreo(String correo);
     boolean existsByCorreo(String correo);
 }

@@ -2,7 +2,7 @@ package com.microusuario.microserviceusuario.service;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import com.microusuario.microserviceusuario.repository.EstudianteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,10 +13,10 @@ import com.microusuario.microserviceusuario.models.entity.AdministradorEntity;
 import com.microusuario.microserviceusuario.repository.AdministradorRepository;
 
 
-
-
 @Service
 public class AdministradorService {
+
+    private final EstudianteRepository estudianteRepository;
 
     @Autowired 
     private AdministradorRepository administradorRepository;
@@ -29,8 +29,9 @@ public class AdministradorService {
 
      private final List<Administrador> administradores = new ArrayList<>();
 
-    public AdministradorService(){
+    public AdministradorService(EstudianteRepository estudianteRepository){
         administradores.add(new Administrador(343, "20998123-k", "jorge", "fuenzalida", "fuen@gmail.com", "hola454", "adm123"));
+        this.estudianteRepository = estudianteRepository;
 
     }
 
@@ -93,6 +94,10 @@ public class AdministradorService {
 
 
 
+    }
+
+    public long contarEstudiantes(){
+        return estudianteRepository.count();
     }
 }
 

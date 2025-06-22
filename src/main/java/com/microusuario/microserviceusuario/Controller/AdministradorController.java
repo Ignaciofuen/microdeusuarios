@@ -29,7 +29,7 @@ public class AdministradorController {
 
     @Autowired
     private AdministradorService administradorService;
-    AdministradorService accionesAdmministrador = new AdministradorService();
+    AdministradorService accionesAdmministrador = new AdministradorService(null);
 
     AdministradorController(AdministradorRepository administradorRepository) {
         this.administradorRepository = administradorRepository;
@@ -89,8 +89,10 @@ public class AdministradorController {
        
     }
 
-    
+    @Operation(summary = "contar estudiantes")
+    @GetMapping("/contar-estudiantes")
+    public long contarCursos(){
+            return administradorService.contarEstudiantes();
+        }
 
-    
-    
 }
