@@ -3,6 +3,7 @@ package com.microusuario.microserviceusuario.service;
 import java.util.ArrayList;
 import java.util.List;
 import com.microusuario.microserviceusuario.repository.EstudianteRepository;
+import com.microusuario.microserviceusuario.repository.InstructorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,8 @@ import com.microusuario.microserviceusuario.repository.AdministradorRepository;
 
 @Service
 public class AdministradorService {
+
+    private final InstructorRepository instructorRepository;
 
     private final EstudianteRepository estudianteRepository;
 
@@ -29,9 +32,10 @@ public class AdministradorService {
 
      private final List<Administrador> administradores = new ArrayList<>();
 
-    public AdministradorService(EstudianteRepository estudianteRepository){
+    public AdministradorService(EstudianteRepository estudianteRepository, InstructorRepository instructorRepository){
         administradores.add(new Administrador(343, "20998123-k", "jorge", "fuenzalida", "fuen@gmail.com", "hola454", "adm123"));
         this.estudianteRepository = estudianteRepository;
+        this.instructorRepository = instructorRepository;
 
     }
 
@@ -91,13 +95,14 @@ public class AdministradorService {
         } catch (Exception e) {
             return "Ha ocurrido un error: " + e.getMessage();
         }
-
-
-
     }
 
     public long contarEstudiantes(){
         return estudianteRepository.count();
+    }
+
+    public long contarInstructores(){
+        return instructorRepository.count();
     }
 }
 

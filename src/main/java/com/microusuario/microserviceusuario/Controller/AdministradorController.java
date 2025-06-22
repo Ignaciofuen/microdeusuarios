@@ -29,14 +29,14 @@ public class AdministradorController {
 
     @Autowired
     private AdministradorService administradorService;
-    AdministradorService accionesAdmministrador = new AdministradorService(null);
+    AdministradorService accionesAdmministrador = new AdministradorService(null, null);
 
     AdministradorController(AdministradorRepository administradorRepository) {
         this.administradorRepository = administradorRepository;
     }
 
     
-    @Operation(summary = "lista de studiantes")
+    @Operation(summary = "lista de estudiantes")
     @GetMapping("/Estudiantes")
     public ResponseEntity<List<Estudiante>> verEstudiantes() {    
     List<Estudiante> estudiantes = administradorService.obtenerEstudiantesAdm();
@@ -84,15 +84,18 @@ public class AdministradorController {
         }else{
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(nuevoAdministrador);
         }
-        
-
-       
     }
 
     @Operation(summary = "contar estudiantes")
     @GetMapping("/contar-estudiantes")
     public long contarCursos(){
             return administradorService.contarEstudiantes();
+        }
+    
+    @Operation(summary = "contar instructores")
+    @GetMapping("/contar-instructores")
+    public long contarInstructores(){
+            return administradorService.contarInstructores();
         }
 
 }

@@ -10,4 +10,5 @@ import com.microusuario.microserviceusuario.models.entity.InstructorEntity;
 public interface InstructorRepository extends JpaRepository<InstructorEntity, Integer> {
     InstructorEntity findBycorreo(String cursoAsingnado);
     Boolean existsByCorreo(String cursoAsingnado);
+    long count();
 }

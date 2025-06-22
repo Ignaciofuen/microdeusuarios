@@ -9,6 +9,6 @@ public interface AdministradorRepository extends JpaRepository<AdministradorEnti
 
     AdministradorEntity findByCorreo(String correo);
     Boolean existsByCorreo(String correo);
-    
+    long count();
 
 }

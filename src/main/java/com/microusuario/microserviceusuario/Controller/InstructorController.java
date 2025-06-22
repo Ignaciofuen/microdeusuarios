@@ -54,8 +54,6 @@ public class InstructorController {
     }
 
 
-        
-
     @Operation(summary = "traer_instructor")
     @GetMapping("/traer/{correo}")
     public ResponseEntity<Instructor>traerInstructor(@PathVariable String correo){
