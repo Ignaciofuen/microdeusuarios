@@ -17,9 +17,9 @@ import com.microusuario.microserviceusuario.repository.AdministradorRepository;
 @Service
 public class AdministradorService {
 
-    private final InstructorRepository instructorRepository = null;
+    private InstructorRepository instructorRepository;
 
-    private final EstudianteRepository estudianteRepository = null;
+    private EstudianteRepository estudianteRepository;
 
     @Autowired 
     private AdministradorRepository administradorRepository;
