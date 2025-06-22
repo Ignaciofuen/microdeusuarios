@@ -29,7 +29,7 @@ public class AdministradorController {
 
     @Autowired
     private AdministradorService administradorService;
-    AdministradorService accionesAdmministrador = new AdministradorService();
+    AdministradorService accionesAdmministrador = new AdministradorService(null, null, null, null, null);
     AdministradorController(AdministradorRepository administradorRepository) {
     }
 
