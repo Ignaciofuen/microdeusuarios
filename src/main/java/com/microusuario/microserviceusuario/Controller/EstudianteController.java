@@ -3,7 +3,6 @@ package com.microusuario.microserviceusuario.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,13 +24,11 @@ import io.swagger.v3.oas.annotations.Operation;
 @RequestMapping("/estudiante")
 @RestController
 public class EstudianteController{
-    private final EstudianteRepository estudianteRepository;
     @Autowired
     private EstudianteService estudianteService;
     EstudianteService accionesEstudiante = new EstudianteService();
 
     EstudianteController(EstudianteRepository estudianteRepository) {
-        this.estudianteRepository = estudianteRepository;
     }
 
 

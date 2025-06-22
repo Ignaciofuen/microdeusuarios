@@ -17,9 +17,9 @@ import com.microusuario.microserviceusuario.repository.AdministradorRepository;
 @Service
 public class AdministradorService {
 
-    private final InstructorRepository instructorRepository;
+    private final InstructorRepository instructorRepository = null;
 
-    private final EstudianteRepository estudianteRepository;
+    private final EstudianteRepository estudianteRepository = null;
 
     @Autowired 
     private AdministradorRepository administradorRepository;
@@ -32,12 +32,6 @@ public class AdministradorService {
 
      private final List<Administrador> administradores = new ArrayList<>();
 
-    public AdministradorService(EstudianteRepository estudianteRepository, InstructorRepository instructorRepository){
-        administradores.add(new Administrador(343, "20998123-k", "jorge", "fuenzalida", "fuen@gmail.com", "hola454", "adm123"));
-        this.estudianteRepository = estudianteRepository;
-        this.instructorRepository = instructorRepository;
-
-    }
 
      
     public List<Administrador>obtenerAdministrador(){
@@ -63,25 +57,24 @@ public class AdministradorService {
          return instructoresConCurso;
     }
 
-    public String agregarAdministrador(Administrador adm) {
+    public String agregarAdministrador(Administrador administrador) {
         try {
-            boolean estado = administradorRepository.existsByCorreo(adm.getCorreo());
-            if(!estado){
-                AdministradorEntity nuevoAdministrador = new AdministradorEntity();
-                nuevoAdministrador.setRun(adm.getRun());
-                nuevoAdministrador.setNombre(adm.getNombre()); 
-                nuevoAdministrador.setApellido(adm.getApellido());
-                nuevoAdministrador.setCorreo(adm.getCorreo());
-                nuevoAdministrador.setContrasena(adm.getContrasena());
-                nuevoAdministrador.setAdminCode(adm.getAdminCode());
-                administradorRepository.save(nuevoAdministrador);
-                return "Administrador agregado correctamente";
+            if (administradorRepository.existsByCorreo(administrador.getCorreo())) {
+                return "El usuario ya existe";
             }
-            return "El usuario ya existe";           
+            AdministradorEntity administradorEntity = new AdministradorEntity();
+            administradorEntity.setRun(administrador.getRun());
+            administradorEntity.setNombre(administrador.getNombre());
+            administradorEntity.setApellido(administrador.getApellido());
+            administradorEntity.setCorreo(administrador.getCorreo());
+            administradorEntity.setContrasena(administrador.getContrasena());
+            administradorEntity.setAdminCode(administrador.getAdminCode());
 
-        }
-        catch(Exception e){
-            return "Ha ocurrido un error";
+            administradorRepository.save(administradorEntity);
+            return "Administrador agregado correctamente";
+
+        } catch (Exception e) {
+            return "Ha ocurrido un error: " + e.getMessage();
         }
     }
 

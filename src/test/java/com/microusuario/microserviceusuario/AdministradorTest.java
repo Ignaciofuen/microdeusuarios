@@ -1,6 +1,7 @@
 package com.microusuario.microserviceusuario;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
@@ -53,14 +54,13 @@ public class AdministradorTest {
         administradorEntity.setAdminCode("123");
     }
 
-     @Test
+    @Test
     public void testAgregarAdministrador_existe(){
-        when(administradorRepository.existsByCorreo(any(String.class))).thenReturn(true);
+        when(administradorRepository.existsByCorreo(administrador.getCorreo())).thenReturn(true);
         String result = administradorService.agregarAdministrador(administrador);
         assertEquals("El usuario ya existe", result.trim());
 
     }
-
 
     @Test
     public void testAgregarAdministrador_nuevo(){

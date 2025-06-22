@@ -25,14 +25,12 @@ import io.swagger.v3.oas.annotations.Operation;
 @RestController
 public class AdministradorController {
 
-    private final AdministradorRepository administradorRepository;
+
 
     @Autowired
     private AdministradorService administradorService;
-    AdministradorService accionesAdmministrador = new AdministradorService(null, null);
-
+    AdministradorService accionesAdmministrador = new AdministradorService();
     AdministradorController(AdministradorRepository administradorRepository) {
-        this.administradorRepository = administradorRepository;
     }
 
     
