@@ -91,7 +91,7 @@ public class EstudianteTest {
 
 
     @Test
-    public void tesTraerEstuduanteporCorreo(){
+    public void testTraerEstudianteporCorreo(){
         when(estudianteRepository.findByCorreo("fu@gmailcom")).thenReturn(estudianteEntity);
         Estudiante result = estudianteService.traerEstudiante("fu@gmailcom");
         assertNotNull(result);
