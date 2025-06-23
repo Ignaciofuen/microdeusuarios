@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 @DiscriminatorValue("INSTRUCTOR")
 public class InstructorEntity extends UsuarioEntity  {
-    private String cursoAsingnado;
+    private String cursoAsignado;
     
 
 }

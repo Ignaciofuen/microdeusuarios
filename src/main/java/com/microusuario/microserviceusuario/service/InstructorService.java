@@ -38,7 +38,7 @@ public class InstructorService {
                  entity.getApellido(),
                  entity.getCorreo(),
                  entity.getContrasena(),
-                 entity.getCursoAsingnado()
+                 entity.getCursoAsignado()
              ));
         }
         return dtos;
@@ -46,60 +46,40 @@ public class InstructorService {
 
     }
 
-
-
-
-
-
-
-
-    public String agregarInstructor(Instructor ins) {
-        try {
-            boolean estado = instructorRepository.existsByCorreo(ins.getCorreo());
-            if(!estado){
-                InstructorEntity nuevoInstructor = new InstructorEntity();
-                nuevoInstructor.setRun(ins.getRun());   
-                nuevoInstructor.setNombre(ins.getNombre());
-                nuevoInstructor.setApellido(ins.getApellido());
-                nuevoInstructor.setCorreo(ins.getCorreo());
-                nuevoInstructor.setContrasena(ins.getContrasena());
-                nuevoInstructor.setCursoAsingnado(ins.getCursoAsignado());
-                instructorRepository.save(nuevoInstructor);
-                return "Instructor agregado correctamente";
-            }
-            return "El usuario ya existe";           
-
+    public String agregarInstructor(Instructor instructor) {
+    try {
+        if (instructorRepository.existsByCorreo(instructor.getCorreo())) {
+            return "El usuario ya existe";
+        } else {
+            InstructorEntity nuevoInstructor = new InstructorEntity();
+            nuevoInstructor.setRun(instructor.getRun());
+            nuevoInstructor.setNombre(instructor.getNombre());
+            nuevoInstructor.setApellido(instructor.getApellido());
+            nuevoInstructor.setCorreo(instructor.getCorreo());
+            nuevoInstructor.setContrasena(instructor.getContrasena());
+            nuevoInstructor.setCursoAsignado(instructor.getCursoAsignado());
+            instructorRepository.save(nuevoInstructor);
+            return "Instructor agregado correctamente";
         }
-        catch(Exception e){
-            return "Ha ocurrido un error";
-        }
+    } catch (Exception e) {
+        return "Error al agregar el instructor: " + e.getMessage();
+    }
     }
 
- public Instructor traerInstructor(String correo){
-        try{
-            InstructorEntity inst = instructorRepository.findBycorreo(correo);
-            if (inst!=null){
-                Instructor instructorNuevo = new Instructor(
-                    inst.getId(),
-                    inst.getRun(),
-                    inst.getNombre(),
-                    inst.getApellido(),
-                    inst.getCorreo(),
-                    inst.getContrasena(),
-                    inst.getCursoAsingnado()
-                );
-                return instructorNuevo;
-
-            }
-            return null;
-
-
-        }
-        catch (Exception e){
-            return null;
-        }
-        
-
+    public Instructor traerInstructor(String correo) {
+    if (!instructorRepository.existsByCorreo(correo)) {
+        return null;
+    }
+    InstructorEntity entity = instructorRepository.findByCorreo(correo);
+    Instructor instructor = new Instructor();
+    instructor.setId(entity.getId());
+    instructor.setRun(entity.getRun());
+    instructor.setNombre(entity.getNombre());
+    instructor.setApellido(entity.getApellido());
+    instructor.setCorreo(entity.getCorreo());
+    instructor.setContrasena(entity.getContrasena());
+    instructor.setCursoAsignado(entity.getCursoAsignado());
+    return instructor;
     }
 
    public String borrarInstructor(int id) {    
