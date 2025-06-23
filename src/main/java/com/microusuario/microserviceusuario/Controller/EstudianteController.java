@@ -1,6 +1,8 @@
 package com.microusuario.microserviceusuario.Controller;
 
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -78,7 +80,7 @@ public class EstudianteController{
     
     @Operation(summary = "inscribir_curso")
     @PutMapping("/inscribir/{correo}/{nuevoCurso}")
-    public ResponseEntity<String> inscribirCurso(@PathVariable String correo, @PathVariable("nuevoCurso") String nuevoCurso) {
+    public ResponseEntity<String> inscribirCurso(@PathVariable String correo, @PathVariable("nuevoCurso") List<String> nuevoCurso) {
         String nuevo = estudianteService.inscribirCurso(correo, nuevoCurso);
         
         if (nuevo.equals("Estudiante no encontrado")) {

@@ -12,11 +12,12 @@ public class Instructor extends Usuario {
 
     public Instructor(int id, String run, String nombre, String apellido, String correo, String contrasena,
             String cursoAsignado) {
-        super(id, run, nombre, apellido, correo, contrasena);
+        super();
         this.cursoAsignado = cursoAsignado;
     }
 
     public Instructor(String cursoAsignado) {
+        super();
         this.cursoAsignado = cursoAsignado;
     }
 
