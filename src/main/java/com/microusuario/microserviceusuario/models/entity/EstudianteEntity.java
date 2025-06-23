@@ -1,5 +1,8 @@
 package com.microusuario.microserviceusuario.models.entity;
+import java.util.List;
+
 import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,7 +12,9 @@ import lombok.Setter;
 @Setter
 @DiscriminatorValue("ESTUDIANTE")
 public class EstudianteEntity extends UsuarioEntity{
-    private String cursoInscrito;
+
+    @ElementCollection
+    private List<String> cursoInscrito;
 
 
     
