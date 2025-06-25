@@ -23,14 +23,6 @@ public class EstudianteService{
     @Autowired
     private EstudianteRepository estudianteRepository;
 
-    private final List<Estudiante> estudiantes = new ArrayList<>();
-    
-
-    public EstudianteService(){
-        estudiantes.add(new Estudiante(121, "198883148-4", "juan", "fernandes", "jnandes@gmail.com", "hola123", "ingles"));       
-        
-    }
-
 
     public List<Estudiante> obtenerEstudiantes(){
         List<EstudianteEntity> entities = (List<EstudianteEntity>) estudianteRepository.findAll();
@@ -102,7 +94,7 @@ public class EstudianteService{
     }
  
 
-    public String inscribirCurso(String correo, String nuevoCurso) {
+    public String inscribirCurso(String correo, List<String> nuevoCurso) {
         try {
             EstudianteEntity estudiante = estudianteRepository.findByCorreo(correo);
             if (estudiante != null) {

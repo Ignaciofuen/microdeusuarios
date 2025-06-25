@@ -9,6 +9,8 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.List;
+
 import org.h2.command.dml.MergeUsing.When;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -39,7 +41,7 @@ public class EstudianteTest {
     @BeforeEach
     public void setup(){
         MockitoAnnotations.openMocks(this);
-        estudiante = new Estudiante(1, "19883148-4", "juan", "fuentes", "fu@gmailcom", "fu123", "ingles");
+        estudiante = new Estudiante(1, "19883148-4", "juan", "fuentes", "fu@gmailcom", "fu123", List.of("FS1"));
         estudianteEntity = new EstudianteEntity();
         estudianteEntity.setId(1);
         estudianteEntity.setRun("19883148-4");
@@ -47,7 +49,7 @@ public class EstudianteTest {
         estudianteEntity.setApellido("fuentes");
         estudianteEntity.setCorreo("fu@gmail.com");
         estudianteEntity.setContrasena("fu123");
-        estudianteEntity.setCursoInscrito("ingles");
+        estudianteEntity.setCursoInscrito(List.of("FS1"));
     }
 
    @Test
@@ -62,7 +64,7 @@ public class EstudianteTest {
     @Test
     public void testActualizarEstudiante_noexiste() {
         when(estudianteRepository.existsByCorreo(any(String.class))).thenReturn(false);
-        Estudiante nuevo = new Estudiante(3, "774009008-3", "los", "prueba", "pru@gmai.com", "pru123", "matematicas");
+        Estudiante nuevo = new Estudiante(3, "774009008-3", "los", "prueba", "pru@gmai.com", "pru123", List.of("FS1"));
         String result = estudianteService.agregarEstudiante(nuevo);
 
        assertEquals("Estudiante Agregado correctamente", result.trim());
@@ -89,7 +91,7 @@ public class EstudianteTest {
 
 
     @Test
-    public void tesTraerEstuduanteporCorreo(){
+    public void testTraerEstudianteporCorreo(){
         when(estudianteRepository.findByCorreo("fu@gmailcom")).thenReturn(estudianteEntity);
         Estudiante result = estudianteService.traerEstudiante("fu@gmailcom");
         assertNotNull(result);
@@ -127,7 +129,7 @@ public class EstudianteTest {
 
         EstudianteEntity estudianteEntity = new EstudianteEntity();
         estudianteEntity.setCorreo(correo);
-        estudianteEntity.setCursoInscrito("python");
+        estudianteEntity.setCursoInscrito(List.of("python"));
 
         when(estudianteRepository.findByCorreo(correo)).thenReturn(estudianteEntity);
 

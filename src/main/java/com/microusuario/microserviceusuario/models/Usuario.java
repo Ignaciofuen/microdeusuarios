@@ -1,20 +1,17 @@
 package com.microusuario.microserviceusuario.models;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class Usuario {
-    protected int id;
-    protected String run;
-    protected String nombre;
-    protected String apellido;
-    protected String correo;
-    protected String contrasena;
-
-
-
+    private int id;
+    private String run;
+    private String nombre;
+    private String apellido;
+    private String correo;
+    private String contrasena;
 }
